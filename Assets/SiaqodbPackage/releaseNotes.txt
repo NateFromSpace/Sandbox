@@ -1,0 +1,130 @@
+*****************************************
+Siaqodb v.3.6.0.0
+******************************************
+-OID property is not mandatory anymore for persistent Types, however if OID it is defined, it will be managed automatically by database engine.
+-Shrink is extended and all db files can be shrinked(by using ShrinkType.Total)
+-fix circular reference problem when Indexed field is same Type as DeclaringType.
+
+******************************************
+Siaqodb v.3.5.0.0
+******************************************
+-Indexes resides now in BTree structured files(AVL tree not used anymore)
+-Big improvements brought by new Indexes implementation
+-New Sqo.SiaqodbUtil class: can be used to Shrink database and also to Repair data if exists corrupted bytes
+-Internal changes for better management of space on disk
+-LINQ provider supports "multiple Where"
+-better information about exceptions
+
+To upgrade from version 3.2.X to version 3.5.0.0:
+- before you upgrade the database, it is recommended to backup your database files
+- when first time a database is opened, indexes are re-build and store in a new BTREE structured files. So if you have many indexes, first time you open the database, it might take some extra time.
+
+
+******************************************
+Siaqodb v.3.2.0.6
+******************************************
+-new overloaded method in Siaqodb class:DeleteObjectBy<T>(Dictionary<string,object> criteria) - delete all objects that satisfy field/value criteria
+-new overloaded method in Siaqodb class:StoreObjectPartially(object obj,bool onlyReferences, params string[] properties) - if property to be saved is IList that has complex types as items, it will store only references of exiting complex objects,and only new complex objects will be persisted 
+-new event in Siaqodb class:IndexesSaveAsyncFinished(...) which will notify when async building process of Indexes is finished. 
+-fix reflection issues caused by using VB.NET as development language
+
+******************************************
+Siaqodb v.3.2.0.5
+******************************************
+-fix index issue when only one node is saved and flushed
+-fix compatibility issue between .net version and Silverlight
+-fix upgrade schema bug-deleted objects may became undeleted or coruppted fo Type definition upgrade
+******************************************
+Siaqodb v.3.2.0.2
+******************************************
+-bug fix: nested lists of complex type throw exception when try to Load
+-bug fix: when compare to complex objects with arrays/lists properties in a LINQ query an exception was thrown
+-bug fix: upgrade problem from previous versions to version 3.2
+
+******************************************
+Siaqodb v.3.2.0.0
+******************************************
+-add support for Dictionary<,> types
+-add support for unlimited size jagged arrays types
+-add support for IList<IList<IList...> types
+-add support for IList items properties in LINQ Include() method (ex: .Include("Employees.Nationality"); where Employees is IList<Employee>)
+-performance improved on insert with 30% in same cases 
+-new methods for fast insert: siaqodb.StartBulkInsert(...) and siaqodb.EndBulkInsert(...)
+-better information about exceptions
+-other improvements
+
+******************************************
+Siaqodb v.3.1.0.1
+******************************************
+
+-bug fix: XML Export/Import for Nullable types
+-bug fix: adding Index for existing Text properties cause 'Index as outside the bounds of the array'Exception.
+
+******************************************
+Siaqodb v.3.1.0
+******************************************
+-optimize LINQ methods: OrderBy, OrderByDescending, ThenBy, ThenByDescending
+-new method: StoreObjectPartially(...) added to Siaqodb class; through it you can save only a few prtoperties/fields of and object and not full object.
+-Replace parameter on LoadingObjectEventArgs class to be able to set an object from memory instead from database
+-add support for storing directly generic types.
+-new method:EnableOptimisticConcurrency(...) useful when you work with SiaqodbOffline (in SyncFramework provider context)
+ 
+
+******************************************
+Siaqodb v.3.0.5
+******************************************
+-bug fix:rawdatainfo sys db file not compatible between platforms
+-bug fix: LoadValue() not work when LoadRelatedObjects(false) is set
+-bug fix:deadlock on multi-threading envs. when Load(...) and Store(...) is called in parallel and are involved complex objects
+-DateTimeKind is possible to be set automatically by the engine if is set:SiaqodbConfigurator.SpecifyStoredDateTimeKind(DateTimeKind? kind) method.
+
+******************************************
+Siaqodb v.3.0.4
+******************************************
+Release notes:
+-bug fix: WHERE on a field declared in a Base Type not work correctly
+
+
+******************************************
+Siaqodb v.3.0.3
+******************************************
+Release notes:
+-bug fix Index not work for field of Enum type
+
+******************************************
+Siaqodb v.3.0.2
+******************************************
+Release notes:
+-support for DateTimeOffset as storable type
+
+******************************************
+Siaqodb v.3.0
+******************************************
+Release notes:
+-support for nested objects
+-support for IList/Array of nested objects
+-Eager loading, .Include method
+-fixes and improvements
+
+Upgrade considerations:
+-databases saved with previous version of Siaqodb will be automatically upgraded to new version 3.0 format, however it is very important that a backup of your database is made before upgrading!!!
+
+
+*****************************************
+Siaqodb v.2.6.
+*****************************************
+Release notes:
+-Indexes are now persisted in db as AVL tree structured files. 
+-Support for variable length of String by using [Text] attribute
+-Support for blobs (array of byte[] in efficient way)
+-Support for Arrays of supported types (int,uint,short,string,ushort,byte,sbyte,long,ulong,float,double,decimal,char,bool,TimeSpan,DateTime,Guid, enum)
+-Support for IList and IList<T>
+-new API method:LoadAllLazy<T>() which load all objects but in lazy mode, only when object is accessed by index or by enumerator, it is loaded from database
+
+
+To upgrade from version 2.5.X to version 2.6:
+-it must be considered when first time a database is opened, if there are indexes defined on types stored in database, 
+those indexes are built and made persistent in database index files. So if there are a lot of data objects involved,
+this may take a bit more then usual to open the database,but only first time.
+ 
+
